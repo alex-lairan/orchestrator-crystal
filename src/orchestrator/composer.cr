@@ -7,11 +7,19 @@ module Orchestrator
     @@steps = Array(Pipeline::Item).new
 
     def self.compose(name : Symbol, klass : Orchestrator::Layer.class)
-      @@steps << Pipeline::Composer.new(name, klass)
+      enqueue Pipeline::Composer.new(name, klass)
     end
 
     def self.tee(name : Symbol, klass : Orchestrator::Layer.class)
-      @@steps << Pipeline::Tee.new(name, klass)
+      enqueue Pipeline::Tee.new(name, klass)
+    end
+
+    def self.compose(name : Symbol, composer : Orchestrator::Composer)
+      enqueue Pipeline::Composer.new(name, composer)
+    end
+
+    def self.enqueue(pipeline : Pipeline::Item)
+      @@steps << pipeline
     end
 
     def call(input : Hash) : Monads::Result
@@ -27,6 +35,12 @@ module Orchestrator
       end
 
       previous
+    end
+
+    def rollback(input : Monads::Result) : Void
+      @@steps.reverse.each do |step|
+        step.rollback(input)
+      end
     end
   end
 end
