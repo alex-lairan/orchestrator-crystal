@@ -26,7 +26,7 @@ module Orchestrator
         return previous if previous.failure?
       end
 
-      monad
+      previous
     end
   end
 end

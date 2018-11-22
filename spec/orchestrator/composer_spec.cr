@@ -1,3 +1,5 @@
+require "../spec_helper"
+
 describe Orchestrator::Composer do
   describe "with correct data" do
     it "return success" do
@@ -5,17 +7,15 @@ describe Orchestrator::Composer do
       transaction = UserComposer.new
       result = transaction.call(input)
 
-      result.value!.should eq(input)
+      result.success?.should eq(true)
     end
 
-    it "should increment USERS" do
-      count = USERS.size
-
+    it "should return a user" do
       input = { name: "Alex", email: "example@email.co" }.to_h
       transaction = UserComposer.new
       result = transaction.call(input)
 
-      USERS.size.should eq(count + 1)
+      result.value![:user].should eq(User.new(input[:name], input[:email]))
     end
   end
 
@@ -25,17 +25,15 @@ describe Orchestrator::Composer do
       transaction = UserComposer.new
       result = transaction.call(input)
 
-      result.failure.should be_truthy
+      result.failure?.should be_truthy
     end
 
-    it "should not increment USERS" do
-      count = USERS.size
-
-      input = {email: "example@email.co"}.to_h
+    it "should not return user" do
+      input = { email: "example@email.co" }.to_h
       transaction = UserComposer.new
       result = transaction.call(input)
 
-      USERS.size.should eq(count)
+      result.failure.should eq(:validation_error)
     end
   end
 end
