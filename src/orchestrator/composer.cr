@@ -22,19 +22,20 @@ module Orchestrator
       @@steps << pipeline
     end
 
+    def perform(input : Hash) : Monads::Result
+      call(input)
+    end
+
     def call(input : Hash) : Monads::Result
       monad = Monads::Success.new(input)
-      previous = Monads::Success.new(input)
 
       @@steps.each_with_index do |step, i|
-        data = monad.value!.merge(previous.value!)
-        monad = Monads::Success.new(data)
-        previous = step.call(data)
+        monad = step.call(monad.value!)
 
-        return previous if previous.failure?
+        return monad if monad.failure?
       end
 
-      previous
+      monad
     end
 
     def rollback(input : Monads::Result) : Void
