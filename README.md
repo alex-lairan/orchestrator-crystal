@@ -1,6 +1,25 @@
 # orchestrator
 
-Allow you to split your logic into composable multiple pieces.
+Allow you to split your logic into multiple composable pieces.
+
+Each meta-action in your application is represented by a Composer, like *Create a user*, *Call external API*.
+A composer use sub-logic classes called a Layer.
+A layer will be like *Validate user input*, *Format data*, *Save objects into database*
+
+Example :
+
+Composer -> CreateUser
+Layers ->
+- ValidateUserData
+- CheckIfEmailExist
+- BuildUserDependencies
+- SaveUserToDatabase
+
+Composer -> UpdateUser
+Layers ->
+- FindUser
+- ValidateUserData
+- SaveUserToDatabase
 
 ## Installation
 
@@ -9,7 +28,7 @@ Add this to your application's `shard.yml`:
 ```yaml
 dependencies:
   orchestrator:
-    github: alex-lairan/orchestrator
+    github: alex-lairan/orchestrator-crystal
 ```
 
 ## Usage
