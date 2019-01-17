@@ -55,7 +55,7 @@ class UserRegistration < Orchestrator::Composer
 end
 ```
 
-That it, now call this super class !
+That it, now call this orchestrator class !
 
 ```crystal
 composer = UserRegistration.new
@@ -67,6 +67,31 @@ else
   # If failure
 end
 ```
+
+The result is a Monads::Result object, you can use any methods from it.
+
+### Advanced layer usage
+
+You can specify what kind of parameters you want for this layer
+
+```crystal
+class PropertyLayer < Orchestrator::Layer
+  required name, String
+  optional option, Bool
+
+  def call(input : Hash)
+    if option
+      Monads::Success.new(input.merge({ :option_in => true }))
+    else
+      Monads::Success.new(input.merge({ :option_in => false }))
+    end
+  end
+end
+```
+
+When you call it with the `perform` method, it prepare all the environment for you.
+
+If `name` is missing, it return you a `Monads::Failure("name is missing")`
 
 ## Development
 
