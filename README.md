@@ -9,6 +9,8 @@ A layer will be like *Validate user input*, *Format data*, *Save objects into da
 Example :
 
 Composer -> CreateUser
+
+
 Layers ->
 - ValidateUserData
 - CheckIfEmailExist
@@ -16,6 +18,8 @@ Layers ->
 - SaveUserToDatabase
 
 Composer -> UpdateUser
+
+
 Layers ->
 - FindUser
 - ValidateUserData
