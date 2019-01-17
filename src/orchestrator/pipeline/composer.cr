@@ -13,7 +13,7 @@ module Orchestrator
       end
 
       def call(input : Hash) : Monads::Result
-        result = @layer.call(input)
+        result = @layer.perform(input)
 
         rollback(result) if result.failure?
 
