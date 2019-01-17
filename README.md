@@ -3,8 +3,12 @@
 Allow you to split your logic into multiple composable pieces.
 
 Each meta-action in your application is represented by a Composer, like *Create a user*, *Call external API*.
-A composer use sub-logic classes called a Layer.
-A layer will be like *Validate user input*, *Format data*, *Save objects into database*
+
+
+A composer chain sub-logic classes called a Layer.
+
+
+A layer can *Validate user input*, *Format data*, *Save objects into database*
 
 Example :
 
