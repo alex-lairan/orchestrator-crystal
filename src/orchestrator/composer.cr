@@ -30,7 +30,8 @@ module Orchestrator
       monad = Monads::Success.new(input)
 
       @@steps.each_with_index do |step, i|
-        monad = step.call(monad.value!)
+        value = monad.value!.as(Hash)
+        monad = step.call(value)
 
         return monad if monad.failure?
       end
